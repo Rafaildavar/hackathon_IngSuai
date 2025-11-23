@@ -5,6 +5,7 @@ export interface IStorage {
   // Processing Tasks
   createTask(task: InsertProcessingTask): Promise<ProcessingTask>;
   getTask(id: string): Promise<ProcessingTask | undefined>;
+  getAllTasks(): Promise<ProcessingTask[]>;
   updateTask(id: string, updates: Partial<ProcessingTask>): Promise<ProcessingTask | undefined>;
   
   // Uploaded Files
@@ -41,6 +42,10 @@ export class MemStorage implements IStorage {
 
   async getTask(id: string): Promise<ProcessingTask | undefined> {
     return this.tasks.get(id);
+  }
+
+  async getAllTasks(): Promise<ProcessingTask[]> {
+    return Array.from(this.tasks.values());
   }
 
   async updateTask(id: string, updates: Partial<ProcessingTask>): Promise<ProcessingTask | undefined> {

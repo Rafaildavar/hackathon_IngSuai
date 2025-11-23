@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a modern web application designed for the Hackathon_Ing_SUAI event that enables users to upload and process documents through an integrated AI model. The application accepts images, PDF files, and ZIP archives, processes them server-side using AI, and allows users to download the results. The system features a clean, minimalist interface with real-time progress tracking and drag-and-drop file upload capabilities.
+This is a modern multi-page web application designed for the Hackathon_Ing_SUAI event that enables users to upload and process documents through an integrated AI model. The application features a comprehensive interface with sidebar navigation, beautiful landing page, dedicated upload/processing workflow, task history tracking, complete API documentation with Swagger, and informative about page. The system accepts images, PDF files, and ZIP archives, processes them server-side using AI, and allows users to download the results with real-time progress tracking.
 
 ## User Preferences
 
@@ -29,7 +29,22 @@ Preferred communication style: Simple, everyday language.
 - **Design System**: Custom color palette (primary: #1e3a8a, accent: #059669) with consistent spacing, typography (Inter font), and component styling
 - **Responsive Design**: Mobile-first approach with breakpoints for tablet and desktop
 
+**Application Structure**
+- **Multi-Page Layout**: Sidebar navigation with 5 distinct pages
+- **Pages**:
+  - `/` - Landing page with hero section, features showcase, stats, and CTA
+  - `/upload` - Upload and processing workflow page
+  - `/history` - Task history with all past processing jobs
+  - `/api` - API documentation with code examples
+  - `/about` - About, FAQ, and supported formats
+
 **Key UI Components**
+- `AppSidebar`: Navigation sidebar with branding and menu items
+- `LandingPage`: Marketing-grade landing page with modern design
+- `UploadPage`: Complete upload/process/download workflow
+- `HistoryPage`: Task history list with status tracking
+- `ApiDocsPage`: API documentation and code examples
+- `AboutPage`: How-it-works, FAQ, and tech stack information
 - `UploadZone`: Drag-and-drop file upload interface
 - `FilePreview`: Individual file cards with removal capability
 - `ProcessingStatus`: Real-time processing progress with animated indicators
@@ -57,8 +72,10 @@ Preferred communication style: Simple, everyday language.
 
 **API Design**
 - `POST /api/upload`: Accepts files, creates processing task, returns task ID
+- `GET /api/tasks`: Returns all processing tasks (task history)
 - `GET /api/status/:task_id`: Polls for processing progress and status updates
 - `GET /api/download/:task_id`: Downloads processed results (ZIP for multiple files)
+- `GET /api-docs`: Swagger UI for interactive API documentation
 
 **Error Handling**
 - File type validation at upload

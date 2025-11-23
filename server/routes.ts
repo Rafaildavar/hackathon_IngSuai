@@ -2,7 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import archiver from "archiver";
+import swaggerUi from "swagger-ui-express";
 import { storage } from "./storage";
+import { swaggerDocument } from "./swagger";
 import path from "path";
 import fs from "fs";
 import { promisify } from "util";
@@ -86,6 +88,12 @@ async function simulateAIProcessing(taskId: string, files: Array<{ id: string; f
 export async function registerRoutes(app: Express): Promise<Server> {
   await ensureDirectories();
 
+  // Swagger API Documentation
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    customSiteTitle: "Hackathon API Documentation",
+    customCss: '.swagger-ui .topbar { display: none }',
+  }));
+
   // Upload endpoint
   app.post('/api/upload', upload.array('files', 50), async (req, res) => {
     try {
@@ -142,6 +150,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('Upload error:', error);
       res.status(500).json({ 
         error: error instanceof Error ? error.message : 'Upload failed' 
+      });
+    }
+  });
+
+  // Task history endpoint
+  app.get('/api/tasks', async (req, res) => {
+    try {
+      const tasks = await storage.getAllTasks();
+      // Sort by creation date, most recent first
+      const sortedTasks = tasks.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      res.json(sortedTasks);
+    } catch (error) {
+      console.error('Get tasks error:', error);
+      res.status(500).json({ 
+        error: error instanceof Error ? error.message : 'Failed to get tasks' 
       });
     }
   });
